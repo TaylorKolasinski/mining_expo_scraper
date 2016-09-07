@@ -19,29 +19,16 @@ class MinerSpider(scrapy.Spider):
 
 
   def getCompanyInfo(self, response):
-    name_l = response.css('h1.entry-title::text').extract()
+    name_l  = response.css('h1.entry-title::text').extract()
+    emal_l  = response.css('div.exhibitor__email a::text').extract()
+    desc_l  = response.css('div.exhibitor__description::text').extract()
+    webs_l  = response.css('div.exhibitor__website a::text').extract()
+    cont_l  = response.css('span.exhibitor__country::text').extract()
 
-    self.item['name'] = name_l[0].encode('utf-8') if len(name_l) > 0 else 'None'
-   
-
-    if len(response.css('div.exhibitor__email a::text').extract()) > 0:
-      self.item['email'] = response.css('div.exhibitor__email a::text').extract()[0].encode('utf-8')
-    else:
-      self.item['email'] = 'None'
-
-    if len(response.css('div.exhibitor__description::text').extract()) > 0:
-      self.item['description'] = response.css('div.exhibitor__description::text').extract()[0].encode('utf-8')
-    else:
-      self.item['description'] = 'None'
-
-    if len(response.css('div.exhibitor__website a::text').extract()) > 0:
-      self.item['website'] = response.css('div.exhibitor__website a::text').extract()[0].encode('utf-8')
-    else:
-      self.item['website'] = 'None'
-
-    if len(response.css('span.exhibitor__country::text').extract()) > 0:
-      self.item['country'] = response.css('span.exhibitor__country::text').extract()[0].encode('utf-8')
-    else:
-      self.item['country'] = 'None'
+    self.item['name']         = name_l[0].encode('utf-8') if len(name_l) > 0 else 'None'
+    self.item['email']        = emal_l[0].encode('utf-8') if len(emal_l) > 0 else 'None'
+    self.item['description']  = desc_l[0].encode('utf-8') if len(desc_l) > 0 else 'None'
+    self.item['website']      = webs_l[0].encode('utf-8') if len(webs_l) > 0 else 'None'
+    self.item['country']      = cont_l[0].encode('utf-8') if len(cont_l) > 0 else 'None'  
 
     yield self.item
